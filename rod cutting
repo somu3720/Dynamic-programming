@@ -1,0 +1,41 @@
+class Solution{
+    public int cutRod(int price[], int n) {
+        //code here
+        int length[] = new int[n];
+        
+        for(int i=0;i<n;i++){
+            length[i] = i+1;
+        }
+        
+        return UnKnapsack(price,length,n,n);
+    }
+    
+    int UnKnapsack(int price[],int length[],int N,int size)
+    {
+       int t[][] = new int[N+1][size+1];
+       
+       for(int i=0;i<=N;i++){
+           for(int j=0;j<=size;j++)
+           {
+               if(i==0 || j==0)
+               t[i][j] = 0;
+           }
+       }
+       
+       for(int i=1;i<=N;i++)
+       {
+           for(int j=1;j<=size;j++){
+               
+               if(length[i-1]<=j)
+               t[i][j] = Math.max(price[i-1] + t[i][j-length[i-1]],t[i-1][j]);
+               
+               else
+               t[i][j] = t[i-1][j];
+           }
+       }
+       
+       return t[N][size];
+       
+       
+    }
+}
