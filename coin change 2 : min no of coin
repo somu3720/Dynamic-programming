@@ -1,0 +1,27 @@
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[][] matrix = new int[coins.length+1][amount+1];
+        int infinity = Integer.MAX_VALUE-1;
+        
+        for(int i=0; i<=coins.length; i++){
+            for(int j=0; j<=amount; j++){
+                // Amount is 0, then no coins would be required
+                if(j==0){
+                    matrix[i][j] = 0;
+                }else if(i==0){
+                    // If coins is 0 then infinity for all the amount!
+                    matrix[i][j] = infinity;
+                }else if(coins[i-1]>j){
+                    // if the current coin is greater than the amount -> Take previous coin value for this amount!
+                    matrix[i][j] = matrix[i-1][j];
+                }else {
+                    // Minimum of including the coin and excluding the coin
+                    // For including -> Deduct the amount with the coin's value
+                    // For excluding -> Just take the previous coin value for the same amount
+                    matrix[i][j] = Math.min(1+matrix[i][j-coins[i-1]], matrix[i-1][j]);
+                }
+            }
+        }
+        return matrix[coins.length][amount]>=infinity?-1:matrix[coins.length][amount];
+    }
+}
