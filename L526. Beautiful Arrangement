@@ -1,0 +1,45 @@
+class Solution {
+    
+    int count = 0;
+
+    public int countArrangement(int n) {
+      
+        int list[] = new int[n];
+        
+        for(int i = 0; i < n; i++)
+          list[i] = i + 1;  
+        
+        check(list,0);
+        
+        
+        return count;
+    }
+    
+    void check(int []list, int j)
+    {   
+        if(j == list.length) count++;
+        for(int i = j; i < list.length; i++)
+        {
+            swap(list, i, j); 
+            
+            if((list[j] % (j + 1) == 0 ) || ((j + 1) % list[j] == 0))
+                check(list, j + 1);
+             
+            swap(list, i, j);
+            
+        }
+    }
+    
+    void swap(int [] list, int i, int j)
+    {
+        int temp = list[i];
+        list[i] = list[j];
+        list[j] = temp;
+    }
+    
+    
+}
+
+
+//https://www.youtube.com/watch?v=QchuIDMKROQ&t=191s
+
