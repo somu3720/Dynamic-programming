@@ -21,3 +21,5 @@ class Solution {
         return op;
     }
 }
+
+//https://www.youtube.com/watch?v=4YjEHmw1MX0&t=50s
