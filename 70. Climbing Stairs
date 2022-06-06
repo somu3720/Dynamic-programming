@@ -1,0 +1,27 @@
+class Solution {
+    public int climbStairs(int n) {
+        int dp[] = new int[n+1];
+        
+        return helper(0, n, dp);
+        
+    }
+    
+    private int helper(int i, int n, int [] dp)
+    {
+        if(i > n)
+            return 0;
+        
+        if(i == n)
+            return 1;
+        
+        if(dp[i] > 0)
+            return dp[i];
+        
+        dp[i] =  helper(i+1, n, dp) + helper(i + 2, n, dp);
+        
+        return dp[i];
+    }
+}
+
+//https://www.youtube.com/watch?v=97Esq1mqZGg
+//leetcode editorial
