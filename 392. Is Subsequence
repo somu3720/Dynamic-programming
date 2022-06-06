@@ -1,0 +1,22 @@
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+     Integer leftBound = s.length();
+     Integer rightBound = t.length();
+        Integer pleft = 0, pright = 0;
+        
+        while(pleft < leftBound && pright < rightBound)
+        {
+            if(s.charAt(pleft) == t.charAt(pright))
+            {
+                pleft++;
+                
+            }
+            pright++;
+            
+        }
+        
+        return pleft == leftBound;
+    }
+}
+
+//leetcode editorial
