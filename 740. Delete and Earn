@@ -1,0 +1,45 @@
+class Solution {
+    
+    private HashMap<Integer, Integer> points = new HashMap<>();
+    private HashMap<Integer, Integer> t = new HashMap<>();
+    
+    private int solve(int num)
+    {
+        // Check for base cases
+        if(num == 0)
+            return 0;
+        
+        if(num == 1)
+            return points.getOrDefault(1,0);
+        
+        if(t.containsKey(num))
+        {
+            return t.get(num);
+        }
+        
+        // Apply recurrence relation
+        
+        int gain = points.getOrDefault(num,0);
+         t.put(num,Math.max(solve(num - 1), solve(num - 2)+ gain));
+        
+        return t.get(num);
+        
+    }
+    
+    
+    
+    public int deleteAndEarn(int[] nums) {
+        
+        int maxNum = 0;
+        
+        // Precompute how many points we gain from taking an element
+        
+        for(int num : nums)
+        {
+            points.put(num,points.getOrDefault(num,0) + num);
+            maxNum = Math.max(maxNum, num);
+        }
+        
+        return solve(maxNum);
+    }
+}
