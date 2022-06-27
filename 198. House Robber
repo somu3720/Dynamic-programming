@@ -1,0 +1,53 @@
+Approach 1: Recursion with Memoization
+
+class Solution {
+    private int t[];
+    
+    public int rob(int[] nums) {
+        
+        this.t = new int[100];
+        
+        Arrays.fill(this.t,-1);
+        
+        return this.solve(0,nums);
+    }
+    
+    private int solve(int i, int nums[])
+    {
+        if(i >= nums.length)
+            return 0;
+        
+        if(this.t[i] != -1)
+            return this.t[i];
+        
+        int ans = Math.max(this.solve(i+1,nums), this.solve(i+2,nums) + nums[i]);
+        
+        this.t[i] = ans;
+        
+        return ans;
+            
+    }
+}
+
+
+Approach 2: Dynamic Programming
+class Solution {
+    public int rob(int[] nums) {
+
+        int n = nums.length;
+        
+        int t[] = new int[n+1];
+        
+        //base condition
+        t[n] = 0;
+        t[n-1] = nums[n-1];
+        
+        for(int i = n-2; i >= 0; i--)
+        {
+            t[i] = Math.max(t[i+1], t[i+2]+nums[i]);
+        }
+        
+        return t[0];
+    }
+}
+
