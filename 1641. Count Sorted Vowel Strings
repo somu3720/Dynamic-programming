@@ -1,0 +1,54 @@
+Approach 2: Decoding the Pattern, Using Recursion
+
+class Solution {
+    public int countVowelStrings(int n) {
+        //using recursion  
+        //countVowelStrings (n, vowels) = isSum(n - 1, vowels) + isSum(n, vowels - 1)
+        
+        return helper(n, 5);
+    }
+    
+    int helper(int n, int vowels)
+    {
+        if(n == 1)
+            return vowels;
+        
+        if(vowels == 1)
+            return 1;
+        
+        int ans = helper(n-1,vowels) + helper(n, vowels - 1);
+        
+        return ans;
+            
+    }
+}
+.................................................................
+
+Approach 3: Using Recursion + Memoization
+
+class Solution {
+    int t[][] = new int[51][6];
+    public int countVowelStrings(int n) {
+        //using memoizeise
+        
+        return helper(n, 5);
+    }
+    
+    int helper(int n, int vowels)
+    {
+        if(n == 1)
+            return vowels;
+        
+        if(vowels == 1)
+            return 1;
+        
+        if(t[n][vowels] != 0)
+            return t[n][vowels];
+        
+        t[n][vowels] = helper(n-1,vowels) + helper(n, vowels - 1);
+        
+        return t[n][vowels];
+            
+    }
+}
+
