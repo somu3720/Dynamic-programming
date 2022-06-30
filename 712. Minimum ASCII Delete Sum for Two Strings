@@ -1,0 +1,175 @@
+recursive method:
+
+
+class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+        
+        int n = s1.length();
+        int m = s2.length();
+        
+       return  helper(s1,s2,n,m);
+    }
+    
+    public int helper(String s1, String s2, int n, int m)
+    {
+        if(m == 0)
+        {
+            int charSum1 = get(s1,n);
+            return charSum1;
+        }
+        
+        if(n == 0)
+        {
+            int charSum2 = get(s2,n);
+            return charSum2;
+        }
+        
+        if(s1.charAt(n-1) == s2.charAt(m-1))
+           return helper(s1, s2, n-1, m-1);
+        
+        else
+        {
+            int ans1 = s1.charAt(n-1) + helper(s1, s2, n-1, m);
+            int ans2 = s2.charAt(m-1) + helper(s1, s2, n, m-1);
+            
+            return Math.min(ans1, ans2);
+        }
+        
+    }
+    
+    public int get(String s, int idx)
+    {
+        int sum = 0;
+        for(int i = 0; i < idx; i++)
+        {
+            sum += s.charAt(i);
+        }
+        
+        return sum;
+    }
+}
+
+
+memozise:
+
+class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+        
+        int n = s1.length();
+        int m = s2.length();
+        
+        int dp[][] = new int[n+1][m+1];
+        
+       return  helper(s1,s2,n,m,dp);
+    }
+    
+    public int helper(String s1, String s2, int n, int m, int dp[][])
+    {
+        if(m == 0)
+        {
+            int charSum1 = get(s1,n);
+            return dp[n][m] = charSum1;
+        }
+        
+        if(n == 0)
+        {
+            int charSum2 = get(s2,m);
+            return dp[n][m] = charSum2;
+        }
+        
+        if(dp[n][m] != 0)
+        {
+            return dp[n][m];
+        }
+        
+        if(s1.charAt(n-1) == s2.charAt(m-1))
+           return dp[n][m] = helper(s1, s2, n-1, m-1, dp);
+        
+        else
+        {
+            int ans1 = s1.charAt(n-1) + helper(s1, s2, n-1, m, dp);
+            int ans2 = s2.charAt(m-1) + helper(s1, s2, n, m-1, dp);
+            
+            return dp[n][m] = Math.min(ans1, ans2);
+        }
+        
+    }
+    
+    public int get(String s, int idx)
+    {
+        int sum = 0;
+        for(int i = 0; i < idx; i++)
+        {
+            sum += s.charAt(i);
+        }
+        
+        return sum;
+    }
+}
+
+//https://www.youtube.com/watch?v=Cp22SGFpDb8&t=13s
+
+tabulation:
+
+class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+        
+        int n = s1.length();
+        int m = s2.length();
+        
+        int dp[][] = new int[n+1][m+1];
+        
+       return  tabu(s1,s2,n,m,dp);
+    }
+    
+
+    public int get(String s, int idx)
+    {
+        int sum = 0;
+        for(int i = 0; i < idx; i++)
+        {
+            sum += s.charAt(i);
+        }
+        
+        return sum;
+    }
+    
+    public int tabu(String s1, String s2, int N, int M, int dp[][])
+    {
+        for(int n = 0; n <= N; n++)
+        {
+            for(int m = 0; m <= M; m++)
+            {
+               
+                if(m == 0)
+                {
+                    int charSum1 = get(s1,n);
+                    dp[n][m] = charSum1;
+                }
+
+               else if(n == 0)
+                {
+                    int charSum2 = get(s2,m);
+                    dp[n][m] = charSum2;
+                }
+
+               
+               else if(s1.charAt(n-1) == s2.charAt(m-1))
+                   dp[n][m] = dp[n-1][ m-1];
+
+                else
+                {
+                    int ans1 = s1.charAt(n-1) + dp[ n-1][m];
+                    int ans2 = s2.charAt(m-1) + dp[n][m-1];
+
+                    dp[n][m] = Math.min(ans1, ans2);
+                 }
+            }
+        }
+        
+        return dp[N][M];
+    }
+    
+}    
+
+//https://www.youtube.com/watch?v=Cp22SGFpDb8&t=13s
