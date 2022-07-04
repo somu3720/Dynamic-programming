@@ -1,0 +1,25 @@
+class Solution {
+    public int minFlipsMonoIncr(String s) {
+        
+        int res = 0;
+        int num_ones = 0;
+        for(char c : s.toCharArray())
+        {
+            if(c == '1')
+                ++num_ones;
+            
+            else if(num_ones > 0)
+            {
+                ++res;
+                --num_ones;
+            }     
+            
+                
+        }
+        
+        return res;
+        
+    }
+}
+
+//https://www.youtube.com/watch?v=-vZ7LjWSWzY
