@@ -1,46 +1,77 @@
 class Solution {
+    int minPrice;
     public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
         
-        return helper(price, special, needs);
+        minPrice = directlyBuy(price, needs);
+        
+        helper(price, special, needs, 0, 0);
+        
+        return minPrice;
         
     }
     
-    public int helper(List<Integer> price, List<List<Integer>> special, List<Integer> needs)
+    public int directlyBuy(List<Integer> price, List<Integer> needs)
     {
-        int j = 0;
+        int n = needs.size();
+        int total = 0;
         
-        int res = dot(needs,price);
-        
-        for(List<Integer> s : special)
+        for(int i = 0; i < n; i++)
         {
-            ArrayList<Integer> clone = new ArrayList<>(needs);
-            
-            for(j = 0; j < needs.size(); j++)
-            {
-                int diff = clone.get(j) - s.get(j);
-                
-                if(diff < 0) break;
-                
-                clone.set(j,diff);
-            }
-            
-            if(j == needs.size())
-                res = Math.min(res, s.get(j) + helper(price,special, clone));
-            
+            total += price.get(i) * needs.get(i);
         }
         
-        return res;
-
+        return total;
     }
     
-    public int dot(List < Integer > a, List < Integer > b)
+    
+    public void helper(List<Integer> price, List<List<Integer>> special, List<Integer> needs, int used, int index)
     {
-        int sum = 0;
         
-            for(int i = 0; i < a.size(); i++)
-                sum += a.get(i)* b.get(i);
+        if(used > minPrice) return;
         
-        return sum;
-
+        if(index == special.size())
+        {    
+            used += directlyBuy(price, needs);
+        
+            if(used < minPrice)
+                minPrice = used;
+        
+        
+             return;
+        }
+        
+        List<Integer> offer = special.get(index);
+        
+        if(canUse(offer, needs))
+        {
+            int n = needs.size();
+            List<Integer> updatedNeeds = new ArrayList<>();
+            
+            for(int i = 0; i < n; i++)
+            {
+               updatedNeeds.add(needs.get(i) - offer.get(i));
+            }
+            
+            helper(price, special, updatedNeeds, used + offer.get(n), index);
+        }
+        
+        helper(price, special, needs, used, index + 1);
+            
     }
+    
+    public boolean canUse(List<Integer> offer, List<Integer> needs)
+    {
+        int n = needs.size();
+        
+        for(int i = 0; i < n; i++)
+        {
+            if(offer.get(i) > needs.get(i)) return false;
+        }
+        
+        return true;
+    }
+    
+    
 }
+
+//https://www.youtube.com/watch?v=DexvMx0GsKY&t=11s
